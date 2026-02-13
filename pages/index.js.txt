@@ -1,9 +1,0 @@
-export default function Home() {
-  return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Welcome to Store Verify Portal</h1>
-      <p>Use <a href="/setup">/setup</a> to generate a QR</p>
-      <p>Use <a href="/verify">/verify</a> to verify code</p>
-    </div>
-  );
-}

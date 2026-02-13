@@ -8,9 +8,9 @@
   },
   "dependencies": {
     "next": "14.x",
+    "otplib": "^13.3.0",
+    "qrcode": "^1.5.4",
     "react": "18.x",
-    "react-dom": "18.x",
-    "speakeasy": "^1.0.1",
-    "qrcode": "^1.5.0"
+    "react-dom": "18.x"
   }
 }

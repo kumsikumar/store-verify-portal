@@ -7,9 +7,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "14.0.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "next": "14.x",
+    "react": "18.x",
+    "react-dom": "18.x",
     "speakeasy": "^1.0.1",
     "qrcode": "^1.5.0"
   }

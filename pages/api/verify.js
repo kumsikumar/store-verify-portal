@@ -1,4 +1,4 @@
-import { authenticator } from "otplib";
+import { verify } from "otplib";
 
 export default function handler(req, res) {
   try {
@@ -8,18 +8,16 @@ export default function handler(req, res) {
     }
 
     const { secret, token } = req.body || {};
-
     if (!secret || !token) {
-      return res
-        .status(400)
-        .json({ error: "Missing secret or token" });
+      return res.status(400).json({ error: "Missing secret or token" });
     }
 
-    const isValid = authenticator.verify({ token, secret });
+    // verify the token
+    const isValid = verify({ secret, token });
 
     return res.status(200).json({ verified: isValid });
-
   } catch (err) {
-    return res.status(500).json({ error: err.message, stack: err.stack });
+    console.error("API verify error:", err);
+    return res.status(500).json({ error: err.message });
   }
 }

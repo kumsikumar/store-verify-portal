@@ -1,4 +1,4 @@
-import { authenticator } from "otplib";
+import { generateSecret, generateURI } from "otplib";
 import QRCode from "qrcode";
 
 export default async function handler(req, res) {
@@ -11,34 +11,25 @@ export default async function handler(req, res) {
     const { agentName, incidentNumber, storeId, storeName } = req.body || {};
 
     if (!agentName || !incidentNumber || !storeId || !storeName) {
-      return res
-        .status(400)
-        .json({ error: "Missing fields: agentName, incidentNumber, storeId, storeName" });
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Generate a TOTP secret
-    const secret = authenticator.generateSecret();
+    // generate a Base32 × secret
+    const secret = generateSecret();
 
-    // otpauth URL
-    const otpauth = authenticator.keyuri(
-      storeId,
-      "StoreHelpDeskAuth",
-      secret
-    );
+    // create your otpauth URI
+    const otpauth = generateURI({
+      label: storeId,           // account name in authenticator
+      issuer: "StoreHelpDeskAuth",
+      secret: secret,
+    });
 
-    // Generate QR code
+    // turn URI into an image to scan
     const qrCode = await QRCode.toDataURL(otpauth);
 
-    return res.status(200).json({
-      secret,
-      qrCode
-    });
-
+    return res.status(200).json({ secret, qrCode });
   } catch (err) {
-    console.error("❌ /api/setup error:", err);
-    return res.status(500).json({
-      error: err.message,
-      stack: err.stack
-    });
+    console.error("API setup error:", err);
+    return res.status(500).json({ error: err.message });
   }
 }
